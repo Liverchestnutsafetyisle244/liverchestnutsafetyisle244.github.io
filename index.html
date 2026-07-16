@@ -204,9 +204,9 @@ loader.load('anonymous_small.glb', (gltf) => {
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3());
   const maxDim = Math.max(size.x, size.y, size.z);
-  const fitDist = maxDim * 1.8;
+  const fitDist = maxDim * 3.0;
   model.position.sub(center);
-  model.position.x += fitDist * 0.3;
+  model.position.x += fitDist * 0.15;
   camera.position.set(0, 0, fitDist);
   scene.add(model);
 });
