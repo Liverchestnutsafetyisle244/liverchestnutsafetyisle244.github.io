@@ -256,7 +256,7 @@ loader.load('anonymous_small.glb', (gltf) => {
   const maxDim = Math.max(size.x, size.y, size.z);
   const fitDist = maxDim * 3.0;
   model.position.sub(center);
-  model.position.x += fitDist * 0.0;
+  model.position.x += fitDist * 0.15;
   camera.position.set(0, 0, fitDist);
   scene.add(model);
 });
