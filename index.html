@@ -55,7 +55,7 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
 
 #main-screen{
   display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-  background:#111;z-index:2;
+  background:transparent;z-index:2;
 }
 #main-screen.active{display:block}
 
@@ -151,8 +151,9 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
 </div>
 
 <div id="main-screen">
-  <button id="avatar-btn"><img id="avatar-img" src="default-avatar.jpg" alt=""></button>
 </div>
+
+<button id="avatar-btn"><img id="avatar-img" src="default-avatar.jpg" alt=""></button>
 
 <div class="profile-overlay" id="profile-overlay">
   <div class="profile-card">
@@ -245,21 +246,24 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
     fetch(SB+'users?login=eq.'+encodeURIComponent(lg),{headers:H})
     .then(function(r){return r.json()})
     .then(function(rows){
-      if(rows.length>0){
+      console.log('LOGIN RESULT:',rows);
+      if(rows&&rows.length>0){
         if(rows[0].password===pw){toast('Успешно.');enterApp(rows[0])}
         else{toast('Неверный пароль',true)}
       }else{
-        fetch(SB+'users',{method:'POST',headers:H,body:JSON.stringify({login:lg,password:pw})})
+        var PH={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=representation'};
+        fetch(SB+'users',{method:'POST',headers:PH,body:JSON.stringify({login:lg,password:pw})})
         .then(function(r){return r.json()})
         .then(function(d){
+          console.log('REGISTER RESULT:',d);
           if(d&&d.length){toast('Успешно.');enterApp(d[0])}
           else{
             fetch(SB+'users?login=eq.'+encodeURIComponent(lg),{headers:H})
             .then(function(r){return r.json()})
-            .then(function(rows2){if(rows2.length){toast('Успешно.');enterApp(rows2[0])}else{toast('Ошибка',true)}});
+            .then(function(r2){if(r2&&r2.length){toast('Успешно.');enterApp(r2[0])}else{toast('Ошибка регистрации',true)}});
           }
         })
-        .catch(function(e){console.error(e);toast('Ошибка',true)});
+        .catch(function(e){console.error(e);toast('Ошибка регистрации',true)});
       }
     })
     .catch(function(e){console.error(e);toast('Ошибка соединения',true)});
