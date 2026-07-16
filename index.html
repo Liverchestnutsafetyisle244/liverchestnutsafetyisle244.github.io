@@ -36,12 +36,15 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
 .field input:focus{border-bottom-color:rgba(255,255,255,0.8)}
 .field input::placeholder{color:rgba(255,255,255,0.25);font-weight:300;letter-spacing:1px}
 
+.btn-row{display:flex;gap:12px;margin-top:36px}
 .btn{
-  margin-top:36px;width:160px;height:48px;border-radius:24px;border:none;
+  width:160px;height:48px;border-radius:24px;border:none;
   background:#fff;color:#000;font-family:'Roboto',sans-serif;font-weight:700;
   font-size:14px;letter-spacing:2px;cursor:pointer;transition:transform 0.2s;
 }
 .btn:hover{transform:scale(1.04)}.btn:active{transform:scale(0.97)}
+.btn-dark{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.15)}
+.btn-dark:hover{background:rgba(255,255,255,0.14);color:#fff}
 
 .toast{
   position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(80px);
@@ -140,7 +143,10 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
   <div class="fields">
     <div class="field"><input type="text" placeholder="Логин" autocomplete="off" id="login-input"></div>
     <div class="field"><input type="password" placeholder="Пароль" autocomplete="off" id="password-input"></div>
-    <button class="btn" id="login-btn">Вход</button>
+    <div class="btn-row">
+      <button class="btn" id="login-btn">Вход</button>
+      <button class="btn btn-dark" id="reg-btn">Регистрация</button>
+    </div>
   </div>
 </div>
 
@@ -237,28 +243,28 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
     fetch(SB+'users?login=eq.'+encodeURIComponent(lg),{headers:H})
     .then(function(r){return r.json()})
     .then(function(rows){
-      console.log('LOGIN RESULT:',rows);
       if(rows&&rows.length>0){
         if(rows[0].password===pw){toast('Успешно.');enterApp(rows[0])}
         else{toast('Неверный пароль',true)}
-      }else{
-        var PH={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=representation'};
-        fetch(SB+'users',{method:'POST',headers:PH,body:JSON.stringify({login:lg,password:pw})})
-        .then(function(r){
-          if(!r.ok) throw new Error('post failed');
-          return r.json();
-        })
-        .then(function(d){
-          console.log('REGISTER RESULT:',d);
-          if(d&&d.length){toast('Успешно.');enterApp(d[0])}
-          else{
-            fetch(SB+'users?login=eq.'+encodeURIComponent(lg),{headers:H})
-            .then(function(r){return r.json()})
-            .then(function(r2){if(r2&&r2.length){toast('Успешно.');enterApp(r2[0])}else{toast('Ошибка регистрации',true)}});
-          }
-        })
-        .catch(function(e){console.error(e);toast('Ошибка регистрации',true)});
-      }
+      }else{toast('Аккаунт не найден',true)}
+    })
+    .catch(function(e){console.error(e);toast('Ошибка соединения',true)});
+  });
+
+  document.getElementById('reg-btn').addEventListener('click',function(){
+    var lg=document.getElementById('login-input').value.trim();
+    var pw=document.getElementById('password-input').value.trim();
+    if(!lg||!pw){toast('Заполни все поля',true);return}
+
+    fetch(SB+'users?login=eq.'+encodeURIComponent(lg),{headers:H})
+    .then(function(r){return r.json()})
+    .then(function(rows){
+      if(rows&&rows.length>0){toast('Логин уже занят',true);return}
+      var PH={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=representation'};
+      fetch(SB+'users',{method:'POST',headers:PH,body:JSON.stringify({login:lg,password:pw})})
+      .then(function(r){if(!r.ok)throw new Error();return r.json()})
+      .then(function(d){if(d&&d.length){toast('Зарегистрирован!');enterApp(d[0])}else{toast('Ошибка',true)}})
+      .catch(function(){toast('Ошибка регистрации',true)});
     })
     .catch(function(e){console.error(e);toast('Ошибка соединения',true)});
   });
@@ -314,7 +320,7 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
 <script type="module">
 import * as THREE from 'three';
 import { GLTFLoader } from './lib/GLTFLoader.js';
-if(/Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)&&innerWidth<768){document.getElementById('pc').style.display='none';throw new Error('mobile')}
+if(/Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)&&innerWidth<768){document.getElementById('pc').style.display='none'}
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x000000);
 const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,0.1,1000);
 const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('pc'),antialias:true});
