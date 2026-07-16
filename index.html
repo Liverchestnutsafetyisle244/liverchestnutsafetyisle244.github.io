@@ -31,24 +31,17 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
 .field input{
   width:100%;background:none;border:none;border-bottom:1px solid rgba(255,255,255,0.25);
   padding:12px 0 10px;color:#fff;font-family:'Roboto',sans-serif;font-weight:400;
-  font-size:15px;letter-spacing:0.5px;outline:none;
-  transition:border-color 0.3s;
+  font-size:15px;letter-spacing:0.5px;outline:none;transition:border-color 0.3s;
 }
 .field input:focus{border-bottom-color:rgba(255,255,255,0.8)}
 .field input::placeholder{color:rgba(255,255,255,0.25);font-weight:300;letter-spacing:1px}
 
 .btn{
-  margin-top:36px;
-  width:160px;height:48px;
-  border-radius:24px;border:none;
-  background:#fff;color:#000;
-  font-family:'Roboto',sans-serif;font-weight:700;
-  font-size:14px;letter-spacing:2px;
-  cursor:pointer;
-  transition:transform 0.2s;
+  margin-top:36px;width:160px;height:48px;border-radius:24px;border:none;
+  background:#fff;color:#000;font-family:'Roboto',sans-serif;font-weight:700;
+  font-size:14px;letter-spacing:2px;cursor:pointer;transition:transform 0.2s;
 }
-.btn:hover{transform:scale(1.04)}
-.btn:active{transform:scale(0.97)}
+.btn:hover{transform:scale(1.04)}.btn:active{transform:scale(0.97)}
 
 .toast{
   position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(80px);
@@ -60,12 +53,17 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.error{background:rgba(255,60,60,0.9);color:#fff}
 
+#main-screen{
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:#111;z-index:2;
+}
+#main-screen.active{display:block}
+
 #avatar-btn{
-  position:fixed;top:28px;right:28px;z-index:20;
+  position:fixed;top:28px;right:28px;z-index:25;
   width:52px;height:52px;border-radius:50%;overflow:hidden;
   border:2px solid rgba(255,255,255,0.15);cursor:pointer;
-  transition:border-color 0.3s,transform 0.2s;
-  display:none;
+  transition:border-color 0.3s,transform 0.2s;background:#222;
 }
 #avatar-btn:hover{border-color:rgba(255,255,255,0.5);transform:scale(1.05)}
 #avatar-btn img{width:100%;height:100%;object-fit:cover}
@@ -80,55 +78,39 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
 
 .profile-card{
   width:min(440px,90vw);background:#0a0a0a;
-  border:1px solid rgba(255,255,255,0.08);border-radius:20px;
-  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;
 }
 .profile-banner{
-  width:100%;height:140px;background:#111;
+  width:100%;height:140px;background:#161616;
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;position:relative;overflow:hidden;
 }
 .profile-banner img{width:100%;height:100%;object-fit:cover}
-.profile-banner .banner-placeholder{
-  color:rgba(255,255,255,0.15);font-weight:300;font-size:13px;letter-spacing:1px;
-}
-.profile-banner:hover{background:#161616}
+.profile-banner .banner-placeholder{color:rgba(255,255,255,0.15);font-weight:300;font-size:13px;letter-spacing:1px}
+.profile-banner:hover{background:#1c1c1c}
 .profile-banner input{display:none}
 
 .profile-body{padding:0 28px 28px}
 .profile-avatar-wrap{
   width:80px;height:80px;border-radius:50%;overflow:hidden;
-  border:3px solid #0a0a0a;margin-top:-40px;position:relative;
-  cursor:pointer;
+  border:3px solid #0a0a0a;margin-top:-40px;position:relative;cursor:pointer;
 }
 .profile-avatar-wrap img{width:100%;height:100%;object-fit:cover}
 .profile-avatar-wrap input{display:none}
-.profile-avatar-wrap:hover::after{
-  content:'';position:absolute;inset:0;
-  background:rgba(0,0,0,0.4);border-radius:50%;
-}
 
-.profile-login{
-  font-weight:900;font-size:20px;margin-top:14px;letter-spacing:-0.3px;
-}
-
-.profile-desc{
-  margin-top:16px;
-}
+.profile-login{font-weight:900;font-size:20px;margin-top:14px;letter-spacing:-0.3px}
+.profile-desc{margin-top:16px}
 .profile-desc textarea{
   width:100%;background:none;border:none;
   border-bottom:1px solid rgba(255,255,255,0.15);
   color:#fff;font-family:'Roboto',sans-serif;font-weight:300;
   font-size:14px;padding:10px 0;outline:none;resize:none;
-  letter-spacing:0.3px;
-  transition:border-color 0.3s;
+  letter-spacing:0.3px;transition:border-color 0.3s;
 }
 .profile-desc textarea:focus{border-bottom-color:rgba(255,255,255,0.5)}
 .profile-desc textarea::placeholder{color:rgba(255,255,255,0.2)}
 
-.profile-actions{
-  display:flex;justify-content:flex-end;margin-top:24px;gap:12px;
-}
+.profile-actions{display:flex;justify-content:flex-end;margin-top:24px;gap:12px}
 .profile-actions button{
   padding:10px 28px;border-radius:20px;border:none;
   font-family:'Roboto',sans-serif;font-weight:700;font-size:13px;
@@ -140,11 +122,10 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
 
 #mobile-overlay{
   display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-  z-index:100;background:#000;
-  flex-direction:column;align-items:center;justify-content:center;
+  z-index:100;background:#000;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:40px;
 }
-#mobile-overlay .mo-title{font-weight:900;font-size:24px;margin-bottom:16px;letter-spacing:-0.3px}
+#mobile-overlay .mo-title{font-weight:900;font-size:24px;margin-bottom:16px}
 #mobile-overlay .mo-text{font-weight:300;font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;max-width:320px}
 #mobile-overlay .mo-icon{width:48px;height:48px;margin-bottom:30px;border:2px solid rgba(255,255,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center}
 #mobile-overlay .mo-icon svg{width:24px;height:24px;stroke:rgba(255,255,255,0.4);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
@@ -163,17 +144,15 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
 <div class="panel" id="panel">
   <p class="title">Приветствую, залогинься чтобы ты мог сидеть на нашем сайте. Личных данных не требуется.</p>
   <div class="fields">
-    <div class="field">
-      <input type="text" placeholder="Логин" autocomplete="off" id="login-input">
-    </div>
-    <div class="field">
-      <input type="password" placeholder="Пароль" autocomplete="off" id="password-input">
-    </div>
+    <div class="field"><input type="text" placeholder="Логин" autocomplete="off" id="login-input"></div>
+    <div class="field"><input type="password" placeholder="Пароль" autocomplete="off" id="password-input"></div>
     <button class="btn" id="login-btn">Вход</button>
   </div>
 </div>
 
-<button id="avatar-btn"><img id="avatar-img" src="default-avatar.jpg" alt=""></button>
+<div id="main-screen">
+  <button id="avatar-btn"><img id="avatar-img" src="default-avatar.jpg" alt=""></button>
+</div>
 
 <div class="profile-overlay" id="profile-overlay">
   <div class="profile-card">
@@ -210,28 +189,18 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
   var ctx=c.getContext('2d');
   var W,H;
   function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
-  resize();
-  window.addEventListener('resize',resize);
-  var COUNT=120;
-  var pts=[];
+  resize();window.addEventListener('resize',resize);
+  var COUNT=120;var pts=[];
   for(var i=0;i<COUNT;i++){
-    pts.push({
-      x:Math.random()*innerWidth,y:Math.random()*innerHeight,
-      r:Math.random()*2+0.5,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,
-      a:Math.random()*0.5+0.15,ph:Math.random()*Math.PI*2
-    });
+    pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+0.5,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,a:Math.random()*0.5+0.15,ph:Math.random()*Math.PI*2});
   }
   function draw(){
-    ctx.clearRect(0,0,W,H);
-    var t=Date.now()*0.001;
+    ctx.clearRect(0,0,W,H);var t=Date.now()*0.001;
     for(var i=0;i<pts.length;i++){
-      var p=pts[i];
-      p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
-      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      var p=pts[i];p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
       var al=p.a*(0.5+0.5*Math.sin(t+p.ph));
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle='rgba(255,255,255,'+al+')';ctx.fill();
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,'+al+')';ctx.fill();
     }
     requestAnimationFrame(draw);
   }
@@ -240,76 +209,68 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
 </script>
 <script>
 (function(){
-  var isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && innerWidth < 768;
-  if(isMobile){
-    document.getElementById('mobile-overlay').style.display='flex';
-    document.getElementById('panel').style.display='none';
-  }
+  var isMobile=/Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)&&innerWidth<768;
+  if(isMobile){document.getElementById('mobile-overlay').style.display='flex';document.getElementById('panel').style.display='none'}
 })();
 </script>
 <script>
 (function(){
-  var SUPABASE_URL='https://slwzonmiaagcfkthvuzv.supabase.co';
-  var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsd3pvbm1pYWFnY2ZrdGh2dXp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NTQ2MjgsImV4cCI6MjA5NjQzMDYyOH0.2OTf0x4AfV52gl284IaxZl4ypK08gOwaM-crIgndGUI';
-  var restUrl=SUPABASE_URL+'/rest/v1/';
-  var currentUser=null;
+  var SB='https://slwzonmiaagcfkthvuzv.supabase.co/rest/v1/';
+  var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsd3pvbm1pYWFnY2ZrdGh2dXp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NTQ2MjgsImV4cCI6MjA5NjQzMDYyOH0.2OTf0x4AfV52gl284IaxZl4ypK08gOwaM-crIgndGUI';
+  var H={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'};
+  var user=null;
 
-  function showToast(msg,isError){
-    var t=document.getElementById('toast');
-    t.textContent=msg;
-    t.className='toast show'+(isError?' error':'');
+  function toast(m,err){
+    var t=document.getElementById('toast');t.textContent=m;
+    t.className='toast show'+(err?' error':'');
     setTimeout(function(){t.className='toast'},2500);
   }
 
-  function enterApp(user){
-    currentUser=user;
+  function enterApp(u){
+    user=u;
     document.getElementById('panel').classList.add('hidden');
-    document.getElementById('avatar-btn').style.display='block';
-    if(user.avatar){document.getElementById('avatar-img').src=user.avatar}
-    document.getElementById('profile-login').textContent=user.login;
-    if(user.banner){
-      document.getElementById('banner-img').src=user.banner;
-      document.getElementById('banner-img').style.display='block';
-      document.getElementById('banner-text').style.display='none';
-    }
-    if(user.description){document.getElementById('profile-desc-input').value=user.description}
-    if(user.avatar){document.getElementById('profile-avatar-img').src=user.avatar}
+    document.getElementById('main-screen').classList.add('active');
+    if(u.avatar)document.getElementById('avatar-img').src=u.avatar;
+    document.getElementById('profile-login').textContent=u.login;
+    if(u.banner){document.getElementById('banner-img').src=u.banner;document.getElementById('banner-img').style.display='block';document.getElementById('banner-text').style.display='none'}
+    if(u.description)document.getElementById('profile-desc-input').value=u.description;
+    if(u.avatar)document.getElementById('profile-avatar-img').src=u.avatar;
   }
 
   document.getElementById('login-btn').addEventListener('click',function(){
-    var login=document.getElementById('login-input').value.trim();
-    var pass=document.getElementById('password-input').value.trim();
-    if(!login||!pass){showToast('Заполни все поля',true);return}
+    var lg=document.getElementById('login-input').value.trim();
+    var pw=document.getElementById('password-input').value.trim();
+    if(!lg||!pw){toast('Заполни все поля',true);return}
 
-    fetch(restUrl+'users?login=eq.'+encodeURIComponent(login),{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-    }).then(function(r){return r.json()}).then(function(rows){
+    fetch(SB+'users?login=eq.'+encodeURIComponent(lg),{headers:H})
+    .then(function(r){return r.json()})
+    .then(function(rows){
       if(rows.length>0){
-        if(rows[0].password===pass){
-          showToast('Успешно.');
-          enterApp(rows[0]);
-        }else{showToast('Неверный пароль',true)}
+        if(rows[0].password===pw){toast('Успешно.');enterApp(rows[0])}
+        else{toast('Неверный пароль',true)}
       }else{
-        fetch(restUrl+'users',{
-          method:'POST',
-          headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},
-          body:JSON.stringify({login:login,password:pass})
-        }).then(function(r){return r.json()}).then(function(rows){
-          if(rows&&rows.length){showToast('Успешно.');enterApp(rows[0])}
-          else{showToast('Ошибка регистрации',true)}
-        });
+        fetch(SB+'users',{method:'POST',headers:H,body:JSON.stringify({login:lg,password:pw})})
+        .then(function(r){return r.json()})
+        .then(function(d){
+          if(d&&d.length){toast('Успешно.');enterApp(d[0])}
+          else{
+            fetch(SB+'users?login=eq.'+encodeURIComponent(lg),{headers:H})
+            .then(function(r){return r.json()})
+            .then(function(rows2){if(rows2.length){toast('Успешно.');enterApp(rows2[0])}else{toast('Ошибка',true)}});
+          }
+        })
+        .catch(function(e){console.error(e);toast('Ошибка',true)});
       }
-    }).catch(function(){showToast('Ошибка соединения',true)});
+    })
+    .catch(function(e){console.error(e);toast('Ошибка соединения',true)});
   });
 
   document.getElementById('avatar-btn').addEventListener('click',function(){
     document.getElementById('profile-overlay').classList.add('open');
   });
-
   document.getElementById('profile-close').addEventListener('click',function(){
     document.getElementById('profile-overlay').classList.remove('open');
   });
-
   document.getElementById('profile-overlay').addEventListener('click',function(e){
     if(e.target===this)this.classList.remove('open');
   });
@@ -317,110 +278,65 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
   document.getElementById('avatar-wrap').addEventListener('click',function(){
     document.getElementById('avatar-input').click();
   });
-
   document.getElementById('avatar-input').addEventListener('change',function(e){
-    var file=e.target.files[0];if(!file)return;
-    var reader=new FileReader();
-    reader.onload=function(ev){
-      document.getElementById('profile-avatar-img').src=ev.target.result;
-      document.getElementById('avatar-img').src=ev.target.result;
-    };
-    reader.readAsDataURL(file);
+    var f=e.target.files[0];if(!f)return;
+    var r=new FileReader();
+    r.onload=function(ev){document.getElementById('profile-avatar-img').src=ev.target.result;document.getElementById('avatar-img').src=ev.target.result};
+    r.readAsDataURL(f);
   });
 
   document.getElementById('banner-wrap').addEventListener('click',function(){
     document.getElementById('banner-input').click();
   });
-
   document.getElementById('banner-input').addEventListener('change',function(e){
-    var file=e.target.files[0];if(!file)return;
-    var reader=new FileReader();
-    reader.onload=function(ev){
-      document.getElementById('banner-img').src=ev.target.result;
-      document.getElementById('banner-img').style.display='block';
-      document.getElementById('banner-text').style.display='none';
-    };
-    reader.readAsDataURL(file);
+    var f=e.target.files[0];if(!f)return;
+    var r=new FileReader();
+    r.onload=function(ev){document.getElementById('banner-img').src=ev.target.result;document.getElementById('banner-img').style.display='block';document.getElementById('banner-text').style.display='none'};
+    r.readAsDataURL(f);
   });
 
   document.getElementById('profile-save').addEventListener('click',function(){
-    if(!currentUser)return;
-    var avatar=document.getElementById('profile-avatar-img').src;
-    var banner=document.getElementById('banner-img').src||'';
-    var desc=document.getElementById('profile-desc-input').value;
-
-    fetch(restUrl+'users?id=eq.'+currentUser.id,{
-      method:'PATCH',
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},
-      body:JSON.stringify({avatar:avatar,banner:banner,description:desc})
-    }).then(function(r){return r.json()}).then(function(rows){
-      if(rows&&rows.length){currentUser=rows[0]}
-      showToast('Профиль сохранён');
+    if(!user)return;
+    var a=document.getElementById('profile-avatar-img').src;
+    var b=document.getElementById('banner-img').src||'';
+    var d=document.getElementById('profile-desc-input').value;
+    fetch(SB+'users?id=eq.'+user.id,{method:'PATCH',headers:H,body:JSON.stringify({avatar:a,banner:b,description:d})})
+    .then(function(r){return r.json()}).then(function(rows){
+      if(rows&&rows.length)user=rows[0];
+      toast('Профиль сохранён');
       document.getElementById('profile-overlay').classList.remove('open');
-    }).catch(function(){showToast('Ошибка сохранения',true)});
+    }).catch(function(){toast('Ошибка сохранения',true)});
   });
 })();
 </script>
 
 <script type="importmap">
-{
-  "imports": {
-    "three": "./lib/three.module.js",
-    "three/addons/": "./lib/"
-  }
-}
+{"imports":{"three":"./lib/three.module.js","three/addons/":"./lib/"}}
 </script>
 <script type="module">
 import * as THREE from 'three';
 import { GLTFLoader } from './lib/GLTFLoader.js';
-
-const isMobileUA = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-if(isMobileUA && innerWidth < 768){
-  document.getElementById('pc').style.display='none';
-  throw new Error('mobile');
-}
-
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000);
-const camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({canvas:document.getElementById('pc'), antialias:true});
-renderer.setSize(innerWidth, innerHeight);
-renderer.setPixelRatio(devicePixelRatio);
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.2;
-
-scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-const key = new THREE.DirectionalLight(0xffffff, 4);key.position.set(5, 10, 7);scene.add(key);
-const fill = new THREE.DirectionalLight(0xffffff, 2);fill.position.set(-5, 3, -5);scene.add(fill);
-const rim = new THREE.DirectionalLight(0xffffff, 2.5);rim.position.set(0, -2, -5);scene.add(rim);
-const topL = new THREE.PointLight(0xffffff, 3, 50);topL.position.set(0, 10, 0);scene.add(topL);
-const frontL = new THREE.PointLight(0xffffff, 2, 50);frontL.position.set(0, 0, 10);scene.add(frontL);
-
-let model = null;
-const loader = new GLTFLoader();
-loader.load('anonymous_small.glb', (gltf) => {
-  model = gltf.scene;
-  const box = new THREE.Box3().setFromObject(model);
-  const center = box.getCenter(new THREE.Vector3());
-  const maxDim = Math.max(...box.getSize(new THREE.Vector3()));
-  const fitDist = maxDim * 3.0;
-  model.position.sub(center);
-  model.position.x += fitDist * 0.09;
-  camera.position.set(0, 0, fitDist);
-  scene.add(model);
+if(/Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)&&innerWidth<768){document.getElementById('pc').style.display='none';throw new Error('mobile')}
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x000000);
+const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,0.1,1000);
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('pc'),antialias:true});
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(devicePixelRatio);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
+scene.add(new THREE.AmbientLight(0xffffff,0.6));
+const key=new THREE.DirectionalLight(0xffffff,4);key.position.set(5,10,7);scene.add(key);
+const fill=new THREE.DirectionalLight(0xffffff,2);fill.position.set(-5,3,-5);scene.add(fill);
+const rim=new THREE.DirectionalLight(0xffffff,2.5);rim.position.set(0,-2,-5);scene.add(rim);
+scene.add(Object.assign(new THREE.PointLight(0xffffff,3,50),{position:new THREE.Vector3(0,10,0)}));
+scene.add(Object.assign(new THREE.PointLight(0xffffff,2,50),{position:new THREE.Vector3(0,0,10)}));
+let model=null;
+new GLTFLoader().load('anonymous_small.glb',g=>{
+  model=g.scene;const b=new THREE.Box3().setFromObject(model);
+  const c=b.getCenter(new THREE.Vector3());const m=Math.max(...b.getSize(new THREE.Vector3()));
+  const d=m*3.0;model.position.sub(c);model.position.x+=d*0.09;
+  camera.position.set(0,0,d);scene.add(model);
 });
-
-function animate() {
-  requestAnimationFrame(animate);
-  if (model) model.rotation.y += 0.015;
-  renderer.render(scene, camera);
-}
-animate();
-window.addEventListener('resize', () => {
-  camera.aspect = innerWidth / innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth, innerHeight);
-});
+(function anim(){requestAnimationFrame(anim);if(model)model.rotation.y+=0.015;renderer.render(scene,camera)})();
+window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 </script>
 </body>
 </html>
