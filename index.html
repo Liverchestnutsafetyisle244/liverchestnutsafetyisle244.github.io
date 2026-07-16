@@ -53,12 +53,6 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.error{background:rgba(255,60,60,0.9);color:#fff}
 
-#main-screen{
-  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-  background:transparent;z-index:2;
-}
-#main-screen.active{display:block}
-
 #avatar-btn{
   position:fixed;top:28px;right:28px;z-index:25;
   width:52px;height:52px;border-radius:50%;overflow:hidden;
@@ -150,10 +144,7 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
   </div>
 </div>
 
-<div id="main-screen">
-</div>
-
-<button id="avatar-btn"><img id="avatar-img" src="default-avatar.jpg" alt=""></button>
+<button id="avatar-btn" style="display:none"><img id="avatar-img" src="default-avatar.jpg" alt=""></button>
 
 <div class="profile-overlay" id="profile-overlay">
   <div class="profile-card">
@@ -230,7 +221,7 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
   function enterApp(u){
     user=u;
     document.getElementById('panel').classList.add('hidden');
-    document.getElementById('main-screen').classList.add('active');
+    document.getElementById('avatar-btn').style.display='block';
     if(u.avatar)document.getElementById('avatar-img').src=u.avatar;
     document.getElementById('profile-login').textContent=u.login;
     if(u.banner){document.getElementById('banner-img').src=u.banner;document.getElementById('banner-img').style.display='block';document.getElementById('banner-text').style.display='none'}
@@ -253,7 +244,10 @@ canvas#particles{display:block;position:fixed;top:0;left:0;width:100%;height:100
       }else{
         var PH={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=representation'};
         fetch(SB+'users',{method:'POST',headers:PH,body:JSON.stringify({login:lg,password:pw})})
-        .then(function(r){return r.json()})
+        .then(function(r){
+          if(!r.ok) throw new Error('post failed');
+          return r.json();
+        })
         .then(function(d){
           console.log('REGISTER RESULT:',d);
           if(d&&d.length){toast('Успешно.');enterApp(d[0])}
