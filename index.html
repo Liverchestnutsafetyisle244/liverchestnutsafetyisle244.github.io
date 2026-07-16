@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendetta</title>
+<style>
+@font-face{font-family:'Roboto';src:url('fonts/Roboto-Regular.ttf') format('truetype');font-weight:400;font-style:normal}
+@font-face{font-family:'Roboto';src:url('fonts/Roboto-Bold.ttf') format('truetype');font-weight:700;font-style:normal}
+@font-face{font-family:'Roboto';src:url('fonts/Roboto-Black.ttf') format('truetype');font-weight:900;font-style:normal}
+@font-face{font-family:'Roboto';src:url('fonts/Roboto-Light.ttf') format('truetype');font-weight:300;font-style:normal}
+@font-face{font-family:'Roboto';src:url('fonts/Roboto-Medium.ttf') format('truetype');font-weight:500;font-style:normal}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;font-family:'Roboto',sans-serif;color:#fff}
+canvas{display:block;position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
+
+.panel{
+  position:fixed;top:0;left:0;width:50%;height:100%;z-index:1;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:40px 60px;
+}
+.title{
+  font-weight:900;font-size:clamp(20px,3.5vw,36px);
+  line-height:1.3;letter-spacing:-0.5px;
+  margin-bottom:50px;color:rgba(255,255,255,0.9);
+}
+.fields{display:flex;flex-direction:column;gap:24px;max-width:340px}
+.field{position:relative}
+.field input{
+  width:100%;background:none;border:none;border-bottom:1px solid rgba(255,255,255,0.25);
+  padding:12px 0 10px;color:#fff;font-family:'Roboto',sans-serif;font-weight:400;
+  font-size:15px;letter-spacing:0.5px;outline:none;
+  transition:border-color 0.3s;
+}
+.field input:focus{border-bottom-color:rgba(255,255,255,0.8)}
+.field input::placeholder{color:rgba(255,255,255,0.25);font-weight:300;letter-spacing:1px}
+
+.btn{
+  margin-top:36px;
+  width:160px;height:48px;
+  border-radius:24px;border:none;
+  background:#fff;color:#000;
+  font-family:'Roboto',sans-serif;font-weight:700;
+  font-size:14px;letter-spacing:2px;
+  cursor:pointer;
+  transition:transform 0.2s,box-shadow 0.3s;
+}
+.btn:hover{transform:scale(1.04);box-shadow:0 0 20px rgba(255,255,255,0.15)}
+.btn:active{transform:scale(0.97)}
+
+#mobile-overlay{
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:100;background:#000;
+  flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:40px;
+}
+#mobile-overlay .mo-title{
+  font-weight:900;font-size:24px;margin-bottom:16px;
+  letter-spacing:-0.3px;
+}
+#mobile-overlay .mo-text{
+  font-weight:300;font-size:14px;
+  color:rgba(255,255,255,0.4);line-height:1.6;
+  max-width:320px;
+}
+#mobile-overlay .mo-icon{
+  width:48px;height:48px;margin-bottom:30px;
+  border:2px solid rgba(255,255,255,0.2);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+}
+#mobile-overlay .mo-icon svg{
+  width:24px;height:24px;stroke:rgba(255,255,255,0.4);
+  fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
+}
+</style>
+</head>
+<body>
+
+<div id="mobile-overlay">
+  <div class="mo-icon">
+    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+  </div>
+  <p class="mo-title">Режим для ПК</p>
+  <p class="mo-text">Откройте меню браузера и включите "Версия для ПК", затем обновите страницу</p>
+</div>
+
+<div class="panel" id="panel">
+  <p class="title">Приветствую, залогинься чтобы ты мог сидеть на нашем сайте. Личных данных не требуется.</p>
+  <div class="fields">
+    <div class="field">
+      <input type="text" placeholder="Логин" autocomplete="off">
+    </div>
+    <div class="field">
+      <input type="password" placeholder="Пароль" autocomplete="off">
+    </div>
+    <button class="btn">Вход</button>
+  </div>
+</div>
+
+<canvas id="c"></canvas>
+
+<script>
+(function(){
+  var isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && innerWidth < 768;
+  if(isMobile){
+    document.getElementById('mobile-overlay').style.display='flex';
+    document.getElementById('panel').style.display='none';
+  }
+})();
+</script>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "./lib/three.module.js",
+    "three/addons/": "./lib/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from './lib/GLTFLoader.js';
+
+const isMobileUA = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+if(isMobileUA && innerWidth < 768){
+  document.getElementById('c').style.display='none';
+  throw new Error('mobile');
+}
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0a0a0a);
+
+const camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({canvas:document.getElementById('c'), antialias:true});
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(devicePixelRatio);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+const key = new THREE.DirectionalLight(0xffffff, 4);
+key.position.set(5, 10, 7);
+scene.add(key);
+const fill = new THREE.DirectionalLight(0xffffff, 2);
+fill.position.set(-5, 3, -5);
+scene.add(fill);
+const rim = new THREE.DirectionalLight(0xffffff, 2.5);
+rim.position.set(0, -2, -5);
+scene.add(rim);
+const topL = new THREE.PointLight(0xffffff, 3, 50);
+topL.position.set(0, 10, 0);
+scene.add(topL);
+const frontL = new THREE.PointLight(0xffffff, 2, 50);
+frontL.position.set(0, 0, 10);
+scene.add(frontL);
+
+let model = null;
+const loader = new GLTFLoader();
+loader.load('anonymous_small.glb', (gltf) => {
+  model = gltf.scene;
+  const box = new THREE.Box3().setFromObject(model);
+  const center = box.getCenter(new THREE.Vector3());
+  const size = box.getSize(new THREE.Vector3());
+  const maxDim = Math.max(size.x, size.y, size.z);
+  const fitDist = maxDim * 1.5;
+  model.position.sub(center);
+  model.position.x += fitDist * 0.45;
+  camera.position.set(0, 0, fitDist);
+  scene.add(model);
+});
+
+function animate() {
+  requestAnimationFrame(animate);
+  if (model) model.rotation.y += 0.015;
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script>
+</body>
+</html>
